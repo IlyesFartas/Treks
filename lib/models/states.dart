@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+
 
 import 'package:flutter/material.dart';
 
@@ -7,23 +7,22 @@ class States {
   final String name;
 
   const States({required this.id, required this.name});
-
 }
 
-
 class Mystates extends StatelessWidget {
-  
   final String child;
 
   const Mystates(statesData, {required this.child});
 
-
   @override
   Widget build(BuildContext context) {
-    
     return Container(
       height: 200.00,
-      child: Center(child: Text(child,style: TextStyle(fontSize: 40.0),)),
+      child: Center(
+          child: Text(
+        child,
+        style: TextStyle(fontSize: 40.0),
+      )),
     );
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:treks/models/States.dart';
 import 'package:treks/pages/Statescreen.dart';
+import 'package:treks/pages/FavoriteScreen.dart'; 
 
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
 
-  
   final List<States> StatesData = [
     const States(id: '16', name: 'Alger'),
     const States(id: '23', name: 'Annaba'),
@@ -23,6 +23,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
   void _navigateToStateScreen(String stateName) {
     Navigator.push(
       context,
@@ -32,62 +34,87 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+    if (_selectedIndex == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => FavoriteScreen(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.grey[200],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Center(
-                child: Text(
-                  'Please select a state',
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: widget.StatesData.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin:
-                        EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(10.0),
-                      border: Border.all(
-                        color: Colors.grey[400]!,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: ListTile(
-                      tileColor: Colors.white,
-                      title: Text(
-                        widget.StatesData[index].name,
-                        style: TextStyle(
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
-                        ),
-                      ),
-                      onTap: () {
-                        _navigateToStateScreen(widget.StatesData[index].name);
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
+      appBar: AppBar(
+        title: Text('Treks'),
+        centerTitle: true,
+      ),
+      body: GridView.builder(
+        padding: EdgeInsets.all(8.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8.0,
+          crossAxisSpacing: 8.0,
+          childAspectRatio: 0.8, 
         ),
+        itemCount: widget.StatesData.length,
+        itemBuilder: (context, index) {
+          return GestureDetector(
+            onTap: () {
+              _navigateToStateScreen(widget.StatesData[index].name);
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Stack(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.asset(
+                      'assets/image.jpg',
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      height: double.infinity,
+                    ),
+                  ),
+                  Positioned(
+                    bottom: 15.0,
+                    left: 15.0,
+                    child: Text(
+                      widget.StatesData[index].name,
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.favorite),
+            label: 'Favorite',
+          ),
+        ],
       ),
     );
   }

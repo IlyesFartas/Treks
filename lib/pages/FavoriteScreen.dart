@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:treks/pages/PlaceDetailScreen.dart';
+import 'package:treks/pages/PlaceDetailScreen.dart'; 
 
-class StateScreen extends StatelessWidget {
-  final String stateName;
-
-  StateScreen({required this.stateName});
+class FavoriteScreen extends StatelessWidget {
+  
+  final List<String> favoritePlaces = [
+    'Favorite Place 1',
+    'Favorite Place 2',
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          '$stateName',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
+        title: Text('Favorite Places'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -23,7 +20,7 @@ class StateScreen extends StatelessWidget {
       body: Container(
         margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         child: ListView.builder(
-          itemCount: 5,
+          itemCount: favoritePlaces.length,
           itemBuilder: (context, index) {
             return GestureDetector(
               onTap: () {
@@ -31,8 +28,9 @@ class StateScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        PlaceDetailScreen(placeName: 'Place Name ${index + 1}'),
+                    builder: (context) => PlaceDetailScreen(
+                      placeName: favoritePlaces[index],
+                    ),
                   ),
                 );
               },
@@ -46,7 +44,7 @@ class StateScreen extends StatelessWidget {
                   child: Stack(
                     children: [
                       Image.asset(
-                        'assets/image.jpg',
+                        'assets/image.jpg', 
                         width: double.infinity,
                         height: 250,
                         fit: BoxFit.cover,
@@ -62,7 +60,7 @@ class StateScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'Place Name ${index + 1}',
+                                favoritePlaces[index],
                                 style: const TextStyle(
                                   fontSize: 24,
                                   color: Colors.black,
